@@ -25,8 +25,10 @@
             Under the hood, it uses <a href="https://www.terraform.io/">Terraform</a> along with
             <a href="https://github.com/dmacvicar/terraform-provider-libvirt">terraform-libvirt-provider</a>
             to deploy virtual machines on target hosts running libvirt.
-            Kubernetes is configured on the deployed virtual machines using <a href="https://kubespray.io">Kubespray</a>,
-            the popular open source project.
+            Kubernetes is configured on the deployed virtual machines using either
+            <a href="https://kubespray.io">Kubespray</a> or
+            <a href="https://github.com/MusicDin/k3s-ansible">k3s-ansible</a>,
+            depending on the selected manager.
         </p>
     </div>
 
@@ -70,7 +72,7 @@
                 <div class="card-header">Reliable, scalable and reproducible</div class="card-header">
                 <p class="card-content-text text-center">
                     By using a single configuration file, Kubitect clusters can be easily replicated in different
-                    environments, while Kubespray ensures reliability and scalability.
+                    environments, while the selected Kubernetes manager keeps deployments reproducible.
                 </p>
 
                 <div class="card-footer-nav text-center">
