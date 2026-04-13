@@ -46,7 +46,103 @@
         pip3 install virtualenv
         ```
 
+### mkisofs not found
+
+=== ":material-close-thick: Error"
+
+    !!! failure "Error"
+
+        Error: error while starting the creation of CloudInit's ISO image: exec: "mkisofs": executable file not found in $PATH
+
+=== ":material-information-outline: Explanation"
+
+    !!! info "Explanation"
+
+        The error indicates that the local host where Kubitect is running does not have the `mkisofs` executable installed.
+
+        Kubitect uses Terraform's libvirt provider to generate cloud-init ISO images before creating virtual machines.
+
+=== ":material-check-bold: Solution"
+
+    !!! success "Solution"
+
+        Install `mkisofs` on the local host.
+
+        On Debian/Ubuntu, install `genisoimage`:
+
+        ```sh
+        sudo apt install genisoimage
+        ```
+
+        On macOS with Homebrew, install `cdrtools`:
+
+        ```sh
+        brew install cdrtools
+        ```
+
+        After installation, verify that `mkisofs` is available:
+
+        ```sh
+        mkisofs --version
+        ```
+
 ## KVM/Libvirt errors
+
+### Emulator does not support virt type kvm
+
+=== ":material-close-thick: Error"
+
+    !!! failure "Error"
+
+        Error: error defining libvirt domain: unsupported configuration: Emulator '/usr/bin/qemu-system-x86_64' does not support virt type 'kvm'
+
+=== ":material-information-outline: Explanation"
+
+    !!! info "Explanation"
+
+        The error indicates that the target libvirt host does not have usable KVM acceleration.
+
+        Kubitect provisions virtual machines through libvirt on top of a hypervisor supported by libvirt, and this setup expects KVM to be available on the target host.
+
+        This usually happens when:
+
+        + KVM packages are not installed on the target host.
+        + Hardware virtualization is disabled in BIOS/UEFI.
+        + The target host is itself a virtual machine and nested virtualization is not enabled.
+        + The current user cannot access KVM.
+
+=== ":material-check-bold: Solution"
+
+    !!! success "Solution"
+
+        Verify that KVM is available on the target host:
+
+        ```sh
+        sudo virt-host-validate
+        egrep -c '(vmx|svm)' /proc/cpuinfo
+        lsmod | grep kvm
+        ```
+
+        Make sure the required packages are installed:
+
+        ```sh
+        sudo apt install qemu-kvm libvirt-clients libvirt-daemon libvirt-daemon-system
+        ```
+
+        Add the current user to the required groups if needed:
+
+        ```sh
+        sudo usermod -aG libvirt $USER
+        sudo usermod -aG kvm $USER
+        ```
+
+        If the target host is a virtual machine, enable nested virtualization on the parent hypervisor.
+
+        After making changes, restart libvirt and reconnect your shell session:
+
+        ```sh
+        sudo systemctl restart libvirtd
+        ```
 
 ### Failed to connect socket (No such file or directory)
 

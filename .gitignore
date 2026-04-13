@@ -34,3 +34,5 @@ versions.tf.save
 /utils/
 /dev/
 .idea
+.gocache
+.gomodcache
