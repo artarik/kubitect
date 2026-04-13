@@ -2,6 +2,7 @@ package cluster
 
 import (
 	"os"
+	"path"
 	"testing"
 	"time"
 
@@ -63,6 +64,23 @@ func TestGenerateMissingKeys(t *testing.T) {
 
 func TestGenerateMissingKeys_PKPathProvided(t *testing.T) {
 	c := MockCluster(t)
+	assert.NoError(t, c.generateSshKeys())
+}
+
+func TestGenerateMissingKeys_PKPathProvidedWithTilde(t *testing.T) {
+	c := MockCluster(t)
+
+	oldHome := os.Getenv("HOME")
+	defer func() { require.NoError(t, os.Setenv("HOME", oldHome)) }()
+
+	homeDir := t.TempDir()
+	keyDir := path.Join(homeDir, ".ssh")
+	require.NoError(t, os.MkdirAll(keyDir, 0755))
+	require.NoError(t, os.WriteFile(path.Join(keyDir, "id_k0s"), []byte("private"), 0600))
+	require.NoError(t, os.WriteFile(path.Join(keyDir, "id_k0s.pub"), []byte("public"), 0600))
+	require.NoError(t, os.Setenv("HOME", homeDir))
+
+	c.NewConfig.Cluster.NodeTemplate.SSH.PrivateKeyPath = "~/.ssh/id_k0s"
 	assert.NoError(t, c.generateSshKeys())
 }
 

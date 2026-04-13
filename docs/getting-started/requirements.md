@@ -12,7 +12,34 @@ On the local host (*where Kubitect command-line tool is installed*), the followi
 
 :material-record-circle-outline: Python [virtualenv](https://virtualenv.pypa.io/en/latest/index.html)
 
+:material-record-circle-outline: `mkisofs` executable for building cloud-init ISO images
+
 :material-record-circle-outline: Password-less SSH key for each **remote** host
+
+??? question "How to install mkisofs? <i class="click-tip"></i>"
+
+    Kubitect uses Terraform's libvirt provider to create cloud-init ISO images for virtual machines.
+    This requires the `mkisofs` executable to be available on the local host where Kubitect is running.
+
+    For example:
+
+    + On Debian/Ubuntu, install `genisoimage`:
+
+        ```sh
+        sudo apt install genisoimage
+        ```
+
+    + On macOS with Homebrew, install `cdrtools`:
+
+        ```sh
+        brew install cdrtools
+        ```
+
+    After installation, verify that `mkisofs` is available:
+
+    ```sh
+    mkisofs --version
+    ```
 
 <br/>
 

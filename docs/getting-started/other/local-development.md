@@ -9,7 +9,7 @@ This document shows how to build a CLI tool manually and how to use the project 
 ## Prerequisites
 
 + [Git](https://git-scm.com/)
-+ [Go 1.22](https://go.dev/dl/) or greater
++ [Go 1.25.4](https://go.dev/dl/) or greater
 
 ## Step 1: Clone the project
 
@@ -46,7 +46,7 @@ When you create a cluster using the `--local` flag, its name will be prefixed wi
 This prefix is added to prevent any conflicts that might arise when creating new virtual resources.
 
 ```sh
-kubitect apply --local
+kubitect apply --config cluster.yaml --local
 ```
 
 The resulting cluster will be created in `./.kubitect/clusters/local-<cluster-name>` directory.

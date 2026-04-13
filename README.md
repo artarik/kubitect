@@ -10,7 +10,8 @@ Kubitect is an open source project that aims to simplify the **deployment** and 
 It provides a CLI tool written in Golang that lets you **set up**, **upgrade**, **scale**, and **destroy** Kubernetes clusters.
 Under the hood, it uses [Terraform](https://www.terraform.io/) along with [terraform-libvirt-provider](https://github.com/dmacvicar/terraform-provider-libvirt)
 to deploy virtual machines on target hosts running libvirt.
-Kubernetes is configured on the deployed virtual machines using [Kubespray](https://kubespray.io), the popular open source project.
+Kubernetes is configured on the deployed virtual machines using either [Kubespray](https://kubespray.io)
+or [k3s-ansible](https://github.com/MusicDin/k3s-ansible), depending on the selected manager.
 
 </br>
 
